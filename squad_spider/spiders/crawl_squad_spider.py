@@ -50,9 +50,7 @@ class CrawlSquadSpider(scrapy.Spider):
 
     def get_all_player_urls(self):
         extract_obj = ExtractPlayers('/home/sandeep/projects/wc2019/data')
-        players_df = extract_obj.extract_all_players()
-        new_df = extract_obj.create_player_links(players_df)
-        return new_df['link'].values.tolist()
+        return extract_obj.get_player_links()
 
     def parse_teams(self, response):
 
