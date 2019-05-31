@@ -6,6 +6,7 @@ from squad_spider.items import SquadSpiderItem, strip_newlines_and_spaces
 import pandas as pd
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import MapCompose, TakeFirst
+from player_from_scorecard.players_from_commentary import ExtractPlayers
 
 # class CrawlSquadSpider(CrawlSpider):
 
@@ -40,8 +41,18 @@ class CrawlSquadSpider(scrapy.Spider):
 
     def start_requests(self):
         start_urls = ['http://www.espncricinfo.com/ci/content/squad/index.html?object=1144415']
+        start_urls = self.get_all_player_urls() + start_urls
         for url in start_urls:
-            yield scrapy.Request(url=url, callback=self.parse_page)
+            if 'squad' in url:
+                yield scrapy.Request(url=url, callback=self.parse_page)
+            else:
+                yield scrapy.Request(url=url, callback=self.parse_player)
+
+    def get_all_player_urls(self):
+        extract_obj = ExtractPlayers('/home/sandeep/projects/wc2019/data')
+        players_df = extract_obj.extract_all_players()
+        new_df = extract_obj.create_player_links(players_df)
+        return new_df['link'].values.tolist()
 
     def parse_teams(self, response):
 

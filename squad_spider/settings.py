@@ -94,3 +94,4 @@ FEED_URI = 'tmp/player.json'
 
 LOG_ENABLED = True
 LOG_LEVEL = 'INFO'
+LOG_FILE = '/tmp/player_data_extract.log'
