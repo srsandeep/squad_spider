@@ -79,6 +79,7 @@ class CrawlSquadSpider(scrapy.Spider):
     def parse_player(self, response):
 
         player_dict = {}
+        player_id = int(response.url.split('/')[-1].strip('.html'))
         for each_selector in response.xpath('//*[@id="ciHomeContentlhs"]/div/div/div/p[@class="ciPlayerinformationtxt"]'):
             player_dict[each_selector.xpath('.//b/text()').extract()[0]] = \
                             each_selector.xpath('.//span/text()').extract()
@@ -93,6 +94,7 @@ class CrawlSquadSpider(scrapy.Spider):
         player_loader.add_xpath('batting_style', '//*[@id="ciHomeContentlhs"]/div/div/div/p[@class="ciPlayerinformationtxt"]/b[contains(text(), "Batting style")]/../span/text()')
         player_loader.add_xpath('bowling_style', '//*[@id="ciHomeContentlhs"]/div/div/div/p[@class="ciPlayerinformationtxt"]/b[contains(text(), "Bowling style")]/../span/text()')
         player_loader.add_xpath('height', '//*[@id="ciHomeContentlhs"]/div/div/div/p[@class="ciPlayerinformationtxt"]/b[contains(text(), "Height")]/../span/text()')
+        player_loader.add_value('player_id', [player_id])
 
         for each_table in response.xpath('//*[@class="engineTable"]'):
             header = values = []

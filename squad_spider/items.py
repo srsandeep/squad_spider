@@ -29,3 +29,4 @@ class SquadSpiderItem(scrapy.Item):
     batting_stats = scrapy.Field()
     bowling_stats = scrapy.Field()
     experienced = scrapy.Field()
+    player_id = scrapy.Field()
